@@ -4,5 +4,5 @@ services:
     build: . 
     volumes:
       - type: bind
-        source: "./falcon_data_replicator.ini.org"
-        target: "/project/falcon_data_replicator.ini.org"
+        source: "./falcon_data_replicator.ini"
+        target: "/project/falcon_data_replicator.ini"

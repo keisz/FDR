@@ -16,4 +16,4 @@ RUN pip install -r requirements.txt
 
 COPY ./standalone-s3-accesskey .
 
-CMD [ "python", "falcon_data_replicator.py", "-f", "falcon_data_replicator.ini.org"]
+CMD [ "python", "falcon_data_replicator.py", "-f", "falcon_data_replicator.ini"]
