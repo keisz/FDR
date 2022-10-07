@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  fdr: 
+    build: . 
+    volumes:
+      - type: bind
+        source: "./falcon_data_replicator.ini.org"
+        target: "/project/falcon_data_replicator.ini.org"
