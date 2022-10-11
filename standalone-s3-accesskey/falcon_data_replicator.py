@@ -310,24 +310,25 @@ if __name__ == '__main__':
                       aws_secret_access_key=FDR.aws_secret
                       )
     # If we are doing AWS S3 uploads
-    if FDR.target_bucket_name and FDR.target_region_name:
-        logger.info("Upload to AWS S3 enabled")
-        # Connect to our target S3 bucket, uses the existing client configuration to connect (Not the CS provided ones)
-        s3_target = boto3.client('s3', 
-                                 region_name=FDR.target_region_name,
-                                 aws_access_key_id=FDR.target_aws_key,
-                                 aws_secret_access_key=FDR.target_aws_secret
-                                 )
+    if FDR.target_bucket_name:
+        if FDR.target_bucket_name and FDR.target_region_name:
+            logger.info("Upload to AWS S3 enabled")
+            # Connect to our target S3 bucket, uses the existing client configuration to connect (Not the CS provided ones)
+            s3_target = boto3.client('s3', 
+                                    region_name=FDR.target_region_name,
+                                    aws_access_key_id=FDR.target_aws_key,
+                                    aws_secret_access_key=FDR.target_aws_secret
+                                    )
 
-    # If we are doing Wasabi Storage uploads
-    if FDR.target_bucket_name and FDR.wasabi_endpoint_url:
-        logger.info("Upload to Wasabi Storage enabled")
-        # Connect to our target S3 bucket, uses the existing client configuration to connect (Not the CS provided ones)
-        s3_target = boto3.client('s3', 
-                                 endpoint_url=FDR.wasabi_endpoint_url,
-                                 aws_access_key_id=FDR.target_aws_key,
-                                 aws_secret_access_key=FDR.target_aws_secret
-                                 )
+        # If we are doing Wasabi Storage uploads
+        else: #FDR.target_bucket_name and FDR.wasabi_endpoint_url:
+            logger.info("Upload to Wasabi Storage enabled")
+            # Connect to our target S3 bucket, uses the existing client configuration to connect (Not the CS provided ones)
+            s3_target = boto3.client('s3', 
+                                    endpoint_url=FDR.wasabi_endpoint_url,
+                                    aws_access_key_id=FDR.target_aws_key,
+                                    aws_secret_access_key=FDR.target_aws_secret
+                                    )
 
     # Create our queue object for handling message traffic
     queue = sqs.Queue(url=FDR.queue_url)
