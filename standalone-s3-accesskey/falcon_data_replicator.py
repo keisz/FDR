@@ -103,6 +103,10 @@ class FDRConnector:  # pylint: disable=R0902
                     # AWS Access Secret of our target S3 bucket
                     self.target_aws_secret = config["Destination Data"]["TARGET_AWS_SECRET"]
 
+                if config["Destination Data"]["WASABI_ENDPOINT_URL"]:
+                    # Wasabi Storage Endpoint URL
+                    self.wasabi_endpoint_url = config["Destination Data"]["WASABI_ENDPOINT_URL"]
+
         except KeyError:
             pass
 
@@ -305,7 +309,7 @@ if __name__ == '__main__':
                       aws_access_key_id=FDR.aws_key,
                       aws_secret_access_key=FDR.aws_secret
                       )
-    # If we are doing S3 uploads
+    # If we are doing AWS S3 uploads
     if FDR.target_bucket_name and FDR.target_region_name:
         logger.info("Upload to AWS S3 enabled")
         # Connect to our target S3 bucket, uses the existing client configuration to connect (Not the CS provided ones)
@@ -314,6 +318,17 @@ if __name__ == '__main__':
                                  aws_access_key_id=FDR.target_aws_key,
                                  aws_secret_access_key=FDR.target_aws_secret
                                  )
+
+    # If we are doing Wasabi Storage uploads
+    if FDR.target_bucket_name and FDR.wasabi_endpoint_url:
+        logger.info("Upload to Wasabi Storage enabled")
+        # Connect to our target S3 bucket, uses the existing client configuration to connect (Not the CS provided ones)
+        s3_target = boto3.client('s3', 
+                                 endpoint_url=FDR.wasabi_endpoint_url,
+                                 aws_access_key_id=FDR.target_aws_key,
+                                 aws_secret_access_key=FDR.target_aws_secret
+                                 )
+
     # Create our queue object for handling message traffic
     queue = sqs.Queue(url=FDR.queue_url)
     logger.info("Startup complete")
